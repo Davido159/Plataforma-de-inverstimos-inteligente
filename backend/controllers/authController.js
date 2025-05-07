@@ -1,4 +1,4 @@
-// /backend/controllers/authController.js (Atualizado)
+// /backend/controllers/authController.js 
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); // Sequelize Model
 

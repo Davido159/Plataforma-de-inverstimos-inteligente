@@ -1,4 +1,3 @@
-// /backend/controllers/investmentController.js (Atualizado)
 const Investment = require('../models/Investment'); // Sequelize Model
 const { getMarketData } = require('../services/financialAPI');
 const { Op } = require('sequelize'); // Importar operadores do Sequelize se necessário
@@ -44,7 +43,7 @@ exports.fetchAndSaveMarketData = async (req, res, next) => {
     // Espera todas as operações de upsert terminarem
     await Promise.all(investmentPromises);
 
-    // Nota: O resultado de Promise.all(upserts) pode variar entre dialetos.
+    // O resultado de Promise.all(upserts) pode variar entre dialetos.
     // Retornamos uma mensagem genérica de sucesso.
     // Se precisasse retornar os dados salvos/atualizados, faria uma nova query.
     res.json({ message: `Dados de mercado para ${symbol} obtidos e salvos/atualizados.` });
