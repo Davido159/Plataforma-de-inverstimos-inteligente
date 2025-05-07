@@ -1,0 +1,29 @@
+.high-contrast {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+  
+  .high-contrast a, .high-contrast button {
+    background-color: #000 !important;
+    color: #0f0 !important;
+    border: 2px solid #0f0 !important;
+  }
+  
+  .accessibility-toolbar {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    z-index: 9999;
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+  }
+  .accessibility-toolbar button {
+    cursor: pointer;
+    padding: 5px 8px;
+    font-size: 14px;
+  }
+  

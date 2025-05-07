@@ -1,0 +1,42 @@
+# Geral
+node_modules/
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+coverage/
+.vscode/
+.idea/
+.DS_Store
+
+# Docker
+**/Dockerfile
+**/docker-compose.override.yml
+**/.docker/
+
+# Frontend
+frontend/build/
+frontend/node_modules/
+frontend/.env
+
+# Backend
+backend/node_modules/
+backend/.env
+
+# Testes e relatórios
+**/coverage/
+**/jest-html-reporters-*.html
+
+# Sistema
+*.swp
+*.swo
+*.bak
+*.tmp
+*.lock
+
+# Volumes persistentes
+mysql_data/
