@@ -1,0 +1,51 @@
+
+.education-page .education-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: 1px solid var(--sb-border-color, #e3e6f0);
+}
+
+.education-page .education-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.education-page .education-card-img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.education-page .education-card-title {
+  color: var(--sb-primary, #4e73df);
+  font-weight: 600;
+  text-decoration: none;
+}
+.education-page .education-card-title:hover {
+  text-decoration: underline;
+}
+
+
+.education-page .education-badge {
+  font-size: 0.75em;
+  padding: 0.3em 0.6em;
+}
+
+.education-page .type-artigo {
+  background-color: var(--sb-info, #36b9cc) !important;
+  color: white;
+}
+.education-page .type-video {
+  background-color: var(--sb-danger, #e74a3b) !important;
+  color: white;
+}
+.education-page .type-guia {
+  background-color: var(--sb-success, #1cc88a) !important;
+  color: white;
+}
+.education-page .type-curso {
+  background-color: var(--sb-warning, #f6c23e) !important;
+  color: #333;
+}
+
+.modal-body .ratio iframe {
+  border: none;
+}

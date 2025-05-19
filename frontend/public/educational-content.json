@@ -1,0 +1,107 @@
+[
+  {
+    "id": "art005",
+    "type": "artigo",
+    "title": "Tipos de Investimentos: conheça os 6 mais seguros",
+    "description": "Descubra os investimentos mais seguros para iniciantes, como Tesouro Direto, CDBs, LCIs, LCAs, fundos de investimento e LCs, e entenda seus riscos e benefícios.",
+    "url": "https://spcbrasil.org.br/blog/tipos-de-investimentos?utm_source=chatgpt.com",
+    "tags": ["iniciante", "renda fixa", "fundos", "segurança"],
+    "source": "SPC Brasil",
+    "imageUrl": ""
+  },
+  {
+    "id": "art006",
+    "type": "artigo",
+    "title": "Conheça investimentos seguros que rendem bem",
+    "description": "Guia da XP Investimentos sobre como equilibrar segurança, liquidez e rentabilidade, explorando opções de renda fixa para você proteger seu patrimônio.",
+    "url": "https://conteudos.xpi.com.br/aprenda-a-investir/relatorios/investimentos-seguros-que-rendem-bem/?utm_source=chatgpt.com",
+    "tags": ["intermediário", "renda fixa", "segurança", "liquidez"],
+    "source": "XP Investimentos",
+    "imageUrl": ""
+  },
+  {
+    "id": "art007",
+    "type": "artigo",
+    "title": "Quais são os investimentos mais seguros do Brasil?",
+    "description": "Levantamento do Yubb mostrando as opções de renda fixa mais seguras, explicando garantias do FGC e do Tesouro Direto.",
+    "url": "https://yubb.com.br/artigos/renda-fixa/quais-sao-os-investimentos-mais-seguros-do-brasil?utm_source=chatgpt.com",
+    "tags": ["iniciante", "renda fixa", "FGC", "Tesouro Direto"],
+    "source": "Yubb",
+    "imageUrl": ""
+  },
+  {
+    "id": "art008",
+    "type": "artigo",
+    "title": "Investimentos seguros: as opções para proteger seu patrimônio",
+    "description": "Análise da Warren sobre produtos de renda fixa e a importância da diversificação para manter seu portfólio protegido.",
+    "url": "https://warren.com.br/magazine/investimentos-seguros/?utm_source=chatgpt.com",
+    "tags": ["segurança", "diversificação", "renda fixa"],
+    "source": "Warren Magazine",
+    "imageUrl": ""
+  },
+  {
+    "id": "art009",
+    "type": "artigo",
+    "title": "Como investir sem correr riscos?",
+    "description": "Dicas para investidores conservadores do Doutor Finanças, destacando produtos de baixo risco como certificados e depósitos bancários.",
+    "url": "https://www.doutorfinancas.pt/investimentos/o-que-fazer-se-quer-investir-sem-correr-riscos/?utm_source=chatgpt.com",
+    "tags": ["conservador", "baixo risco", "certificados", "depósitos"],
+    "source": "Doutor Finanças",
+    "imageUrl": ""
+  },
+  {
+    "id": "vid005",
+    "type": "video",
+    "title": "5 MELHORES “INVESTIMENTOS” PARA VIDA",
+    "description": "Apresenta cinco recomendações essenciais de investimentos e seguros para diferentes fases da vida.",
+    "url": "https://www.youtube.com/watch?pp=0gcJCdgAo7VqN5tD&v=cxAGbDxzBXI",
+    "embedUrl": "https://www.youtube.com/embed/cxAGbDxzBXI",
+    "tags": ["iniciante", "segurança", "longo prazo"],
+    "source": "Canal Financeiro",
+    "imageUrl": "https://i.ytimg.com/vi/cxAGbDxzBXI/hq720.jpg"
+  },
+  {
+    "id": "vid006",
+    "type": "video",
+    "title": "COMO INVESTIR COM POUCO DINHEIRO EM 2025",
+    "description": "Passo a passo para começar a investir mesmo com pouco capital, com dicas de diversificação e escolha de produtos.",
+    "url": "https://www.youtube.com/watch?v=qBgK1tRAPzA",
+    "embedUrl": "https://www.youtube.com/embed/qBgK1tRAPzA",
+    "tags": ["iniciante", "pequenas aplicações", "diversificação"],
+    "source": "Me Poupe! (Nathalia Arcuri)",
+    "imageUrl": "https://i.ytimg.com/vi/qBgK1tRAPzA/hq720.jpg"
+  },
+  {
+    "id": "vid007",
+    "type": "video",
+    "title": "ONDE INVESTIR 100 MIL REAIS?",
+    "description": "Análise de diversas opções para investir R$100 mil, incluindo ações, FIIs e criptomoedas, com visão de riscos e retorno.",
+    "url": "https://www.youtube.com/watch?v=MVeEFd8YMlo",
+    "embedUrl": "https://www.youtube.com/embed/MVeEFd8YMlo",
+    "tags": ["intermediário", "ações", "FIIs", "criptomoedas"],
+    "source": "Primo Rico (Thiago Nigro)",
+    "imageUrl": "https://i.ytimg.com/vi/MVeEFd8YMlo/hq720.jpg"
+  },
+  {
+    "id": "vid008",
+    "type": "video",
+    "title": "4 INVESTIMENTOS SEGUROS PARA GANHAR MUITO DINHEIRO",
+    "description": "Sugestões de investimentos de baixo risco com potencial de bons retornos, explicando características de cada um.",
+    "url": "https://www.youtube.com/watch?v=_F9RlXwbDoY",
+    "embedUrl": "https://www.youtube.com/embed/_F9RlXwbDoY",
+    "tags": ["segurança", "alto retorno", "renda fixa"],
+    "source": "YouTube Financeiro",
+    "imageUrl": "https://i.ytimg.com/vi/_F9RlXwbDoY/hq720.jpg"
+  },
+  {
+    "id": "vid009",
+    "type": "video",
+    "title": "MELHORES INVESTIMENTOS PARA 2024 E 2025",
+    "description": "Perspectivas e recomendações de investimento para os próximos anos, considerando o cenário macroeconômico.",
+    "url": "https://www.youtube.com/watch?v=isuAxvdrMD0",
+    "embedUrl": "https://www.youtube.com/embed/isuAxvdrMD0",
+    "tags": ["projeções", "estratégia", "cenário econômico"],
+    "source": "Canal Invest & Learn",
+    "imageUrl": "https://i.ytimg.com/vi/isuAxvdrMD0/hq720.jpg"
+  }
+]

@@ -1,20 +1,22 @@
-// /backend/config/db.js 
 const { Sequelize } = require('sequelize');
-require('dotenv').config(); // Garante que as variáveis de ambiente sejam carregadas
+require('dotenv').config(); 
+
+
+const dbHost = process.env.DB_HOST || 'localhost'; 
+const dbPort = process.env.DB_PORT || 3306;    
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASSWORD,
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    host: dbHost,
+    port: dbPort,
     dialect: 'mysql',
-    logging: process.env.NODE_ENV === 'development' ? console.log : false, // Log SQL no desenvolvimento
+    logging: process.env.NODE_ENV === 'development' ? console.log : false,
     dialectOptions: {
-      // connectTimeout: 60000
     },
-    pool: { 
+    pool: {
         max: 5,
         min: 0,
         acquire: 30000,
@@ -26,29 +28,30 @@ const sequelize = new Sequelize(
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Conexão com MySQL estabelecida com sucesso.');
+    console.log(`Conexão com MySQL em ${dbHost}:${dbPort} estabelecida com sucesso.`);
   } catch (error) {
-    console.error('Não foi possível conectar ao banco de dados MySQL:', error);
-    process.exit(1); // Sai se não conseguir conectar
+    console.error(`Não foi possível conectar ao banco de dados MySQL em ${dbHost}:${dbPort}:`, error.message);
+    if (error.original) {
+        console.error('Detalhes do erro original:', error.original);
+    }
+    process.exit(1); 
   }
 };
 
-// Função para sincronizar modelos (criar tabelas)
-// Chame isso APÓS os modelos serem definidos no server.js
-const syncDB = async (options = { alter: true }) => { // 'alter: true' tenta alterar tabelas existentes
+const syncDB = async (options = {}) => { 
   try {
     await sequelize.sync(options);
-    console.log("Modelos sincronizados com o banco de dados.");
+    if (options.alter) {
+        console.log("Modelos sincronizados com o banco de dados (com alterações aplicadas).");
+    } else if (options.force) {
+        console.log("Banco de dados recriado (com tabelas dropadas e recriadas).");
+    } else {
+        console.log("Modelos sincronizados com o banco de dados (tabelas criadas se não existiam).");
+    }
   } catch (error) {
     console.error("Erro ao sincronizar modelos:", error);
-    process.exit(1);
+    throw error; 
   }
 };
-
-console.log('DB_USER:', process.env.DB_USER);
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-console.log('DB_NAME:', process.env.DB_NAME);
-console.log('DB_HOST:', process.env.DB_HOST);
-console.log('DB_PORT:', process.env.DB_PORT);
 
 module.exports = { sequelize, connectDB, syncDB };

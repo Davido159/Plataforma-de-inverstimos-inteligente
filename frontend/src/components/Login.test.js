@@ -1,31 +1,39 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom'; // Para matchers extras como .toBeInTheDocument()
-import axios from 'axios'; // Importamos para poder mockar
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import '@testing-library/jest-dom';
+import axios from 'axios';
+import { MemoryRouter, Routes, Route } from 'react-router-dom'; 
 import Login from './Login';
-
+import App from '../App'; 
 jest.mock('axios');
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(), // Mock do useNavigate
-}));
 
 describe('Login Component', () => {
+  const renderLoginWithRouter = (setTokenMock = jest.fn()) => {
+    return render(
+      <MemoryRouter initialEntries={['/login']}>
+        <Routes>
+          <Route path="/login" element={<Login setToken={setTokenMock} />} />
+          <Route path="/dashboard" element={<div>Dashboard Page</div>} /> {}
+        </Routes>
+      </MemoryRouter>
+    );
+  };
+
+
   it('renderiza o formulário de login corretamente', () => {
-    render(<Login setToken={() => {}} />); // Passa uma função mock para setToken
+    renderLoginWithRouter();
     
-    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/senha/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /bem-vindo de volta!/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/endereço de email/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/senha/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /entrar/i })).toBeInTheDocument();
   });
 
   it('permite ao usuário digitar email e senha', () => {
-    render(<Login setToken={() => {}} />);
+    renderLoginWithRouter();
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/senha/i);
+    const emailInput = screen.getByPlaceholderText(/endereço de email/i);
+    const passwordInput = screen.getByPlaceholderText(/senha/i);
 
     fireEvent.change(emailInput, { target: { value: 'teste@exemplo.com' } });
     fireEvent.change(passwordInput, { target: { value: 'senha123' } });
@@ -34,50 +42,43 @@ describe('Login Component', () => {
     expect(passwordInput.value).toBe('senha123');
   });
 
-  it('chama a API de login, atualiza o token e navega para o dashboard em caso de sucesso', async () => {
-    const mockSetToken = jest.fn(); // Cria uma função mock para setToken
+  it('chama a API de login e chama setToken em caso de sucesso', async () => {
+    const mockSetToken = jest.fn(); 
     const fakeToken = 'fake-jwt-token';
     const fakeEmail = 'teste@exemplo.com';
     const fakePassword = 'senha123';
     
-    const mockNavigate = jest.fn(); // Mock de navigate
-
     axios.post.mockResolvedValue({ data: { token: fakeToken } });
-    useNavigate.mockReturnValue(mockNavigate); // Retorna o mock do navigate
 
-    render(<Login setToken={mockSetToken} />);
+    renderLoginWithRouter(mockSetToken);
 
-    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: fakeEmail } });
-    fireEvent.change(screen.getByLabelText(/senha/i), { target: { value: fakePassword } });
+    fireEvent.change(screen.getByPlaceholderText(/endereço de email/i), { target: { value: fakeEmail } });
+    fireEvent.change(screen.getByPlaceholderText(/senha/i), { target: { value: fakePassword } });
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
 
     await waitFor(() => {
-      // Verifica se axios.post foi chamado com os dados corretos
       expect(axios.post).toHaveBeenCalledWith('http://localhost:5000/auth/login', {
         email: fakeEmail,
         password: fakePassword,
       });
     });
-
     expect(mockSetToken).toHaveBeenCalledWith(fakeToken);
-    expect(mockNavigate).toHaveBeenCalledWith('/dashboard'); // Verifica se a navegação foi feita para o dashboard
+
   });
 
-  it('mostra um erro (no console) se o login falhar', async () => {
+
+  it('mostra uma mensagem de erro se o login falhar', async () => {
     const mockSetToken = jest.fn();
     const fakeEmail = 'errado@exemplo.com';
     const fakePassword = 'errada';
-    const errorMessage = 'Credenciais inválidas';
+    const errorMessage = 'Credenciais inválidas.'; 
 
-    axios.post.mockRejectedValue({ response: { data: { error: errorMessage } } });
+    axios.post.mockRejectedValue({ response: { data: { message: errorMessage } } }); 
 
-    // Mock console.error para verificar se ele é chamado
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    renderLoginWithRouter(mockSetToken);
 
-    render(<Login setToken={mockSetToken} />);
-
-    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: fakeEmail } });
-    fireEvent.change(screen.getByLabelText(/senha/i), { target: { value: fakePassword } });
+    fireEvent.change(screen.getByPlaceholderText(/endereço de email/i), { target: { value: fakeEmail } });
+    fireEvent.change(screen.getByPlaceholderText(/senha/i), { target: { value: fakePassword } });
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
 
     await waitFor(() => {
@@ -88,8 +89,57 @@ describe('Login Component', () => {
     });
 
     expect(mockSetToken).not.toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalled();
+    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+  });
 
-    consoleErrorSpy.mockRestore();
+  it('mostra erro de validação para campos vazios', async () => {
+    renderLoginWithRouter();
+    fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
+    await waitFor(() => {
+        expect(screen.getByText('Por favor, preencha todos os campos.')).toBeInTheDocument();
+    });
+  });
+
+  it('mostra erro de validação para email inválido', async () => {
+    renderLoginWithRouter();
+    fireEvent.change(screen.getByPlaceholderText(/endereço de email/i), { target: { value: 'emailinvalido' } });
+    fireEvent.change(screen.getByPlaceholderText(/senha/i), { target: { value: 'senha123' } });
+    fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
+    await waitFor(() => {
+        expect(screen.getByText('Por favor, insira um email válido.')).toBeInTheDocument();
+    });
   });
 });
+
+
+describe('App Navigation after Login', () => {
+    beforeEach(() => {
+      localStorage.clear(); 
+      axios.post.mockReset();
+      axios.get.mockReset();
+    });
+  
+    test('navega para /dashboard após login bem-sucedido', async () => {
+      const fakeToken = 'fake-jwt-token';
+      const fakeUser = { id: 1, name: 'Test User', email: 'test@example.com', createdAt: new Date().toISOString() };
+  
+      axios.post.mockResolvedValueOnce({ data: { token: fakeToken } }); // Mock para /auth/login
+      axios.get.mockResolvedValueOnce({ data: fakeUser }); // Mock para /api/users/me
+  
+      render(
+        <MemoryRouter initialEntries={['/login']}>
+          <App /> 
+        </MemoryRouter>
+      );
+  
+      fireEvent.change(screen.getByPlaceholderText(/endereço de email/i), { target: { value: 'test@example.com' } });
+      fireEvent.change(screen.getByPlaceholderText(/senha/i), { target: { value: 'password123' } });
+      fireEvent.click(screen.getByRole('button', { name: /entrar/i }));
+  
+      await waitFor(() => expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/auth/login'), expect.anything()));
+      
+      await waitFor(() => expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/api/users/me'), expect.anything()));
+  
+      expect(await screen.findByText(/Dashboard/i, {}, {timeout: 3000})).toBeInTheDocument(); // Aumentado timeout para dar tempo de renderizar
+    });
+  });

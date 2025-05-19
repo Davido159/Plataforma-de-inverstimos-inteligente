@@ -1,6 +1,5 @@
-// /backend/models/Investment.js (Substituído)
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db'); // Importa a instância do Sequelize
+const { sequelize } = require('../config/db'); 
 
 const Investment = sequelize.define('Investment', {
   id: {
@@ -13,13 +12,12 @@ const Investment = sequelize.define('Investment', {
     allowNull: false,
   },
   date: {
-    type: DataTypes.DATEONLY, // Armazena apenas a data (YYYY-MM-DD)
+    type: DataTypes.DATEONLY, 
     allowNull: false,
   },
   open: {
-    type: DataTypes.FLOAT, // Ou DECIMAL para maior precisão financeira
-    // type: DataTypes.DECIMAL(10, 2), // Ex: 10 dígitos no total, 2 decimais
-    allowNull: true, // Permite nulos se a API não retornar
+    type: DataTypes.FLOAT, 
+    allowNull: true, 
   },
   high: {
     type: DataTypes.FLOAT,
@@ -34,15 +32,13 @@ const Investment = sequelize.define('Investment', {
     allowNull: true,
   },
   volume: {
-    type: DataTypes.BIGINT, // Para números potencialmente grandes
+    type: DataTypes.BIGINT, 
     allowNull: true,
   },
 }, {
-  // Opções do Model
   tableName: 'investments',
-  timestamps: true, // Adiciona createdAt e updatedAt
+  timestamps: true, 
   indexes: [
-    // Cria um índice único composto para evitar entradas duplicadas para o mesmo símbolo na mesma data
     {
       unique: true,
       fields: ['symbol', 'date']

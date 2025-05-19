@@ -2,14 +2,24 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "3000:80"
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
+    stdin_open: true
+    tty: true
 
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "${PORT:-5000}:5000"
     environment:
@@ -17,26 +27,27 @@ services:
       PORT: ${PORT:-5000}
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      FINANCIAL_API_KEY: ${FINANCIAL_API_KEY}
-      JWT_SECRET: ${JWT_SECRET}
+      DB_USER: ${DB_USER}     
+      DB_PASSWORD: ${DB_PASSWORD}  
+      DB_NAME: ${DB_NAME}        
+      FINANCIAL_API_KEY: ${FINANCIAL_API_KEY} 
+      JWT_SECRET: ${JWT_SECRET}          
+      CHOKIDAR_USEPOLLING: "true"
     depends_on:
       mysql:
         condition: service_healthy
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: npm run dev
+    command: npm run dev 
 
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} 
+      MYSQL_DATABASE: ${DB_NAME}         
     ports:
       - "3307:3306"
     volumes:
