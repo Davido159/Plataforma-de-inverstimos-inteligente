@@ -249,7 +249,6 @@ const SellInvestmentModal = ({ token, investment, onSuccess, onClose, apiUrl }) 
     );
 };
 
-// --- Componente MyPortfolioPage ---
 const MyPortfolioPage = ({ token }) => {
   const [portfolio, setPortfolio] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -340,12 +339,12 @@ const MyPortfolioPage = ({ token }) => {
         if (itemCurrentPrice !== null && !isNaN(itemCurrentPrice) && itemCurrentPrice > 0) {
             currentValue += itemQuantity * itemCurrentPrice;
         } else {
-            currentValue += itemQuantity * itemPurchasePrice; // Fallback
+            currentValue += itemQuantity * itemPurchasePrice; 
         }
     });
     const profitLoss = currentValue - totalInvested;
-    const profitLossPercent = totalInvested !== 0 ? (profitLoss / totalInvested) * 100 : 0; // Evita divisão por zero
-    console.log("MyPortfolioPage - Resumo Calculado:", { totalInvested, currentValue, profitLoss, profitLossPercent }); // LOG ADICIONADO
+    const profitLossPercent = totalInvested !== 0 ? (profitLoss / totalInvested) * 100 : 0; 
+    console.log("MyPortfolioPage - Resumo Calculado:", { totalInvested, currentValue, profitLoss, profitLossPercent }); 
     return { totalInvested, currentValue, profitLoss, profitLossPercent };
   }, [portfolio]);
 
