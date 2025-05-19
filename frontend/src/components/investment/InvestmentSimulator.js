@@ -1,4 +1,3 @@
-// frontend/src/components/investment/InvestmentSimulator.js
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
