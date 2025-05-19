@@ -163,7 +163,7 @@ const InvestmentRecommendations = ({ monthlyBalance, portfolioData = [] }) => {
           type: "alert-info", icon: "fas fa-building"
         });
       }
-      if (!assetTypesInPortfolio.has('Ação EUA') && !assetTypesInPortfolio.has('ETF Internacional') && portfolioValue > 5000) { // Sugere exterior se já tem um portfólio local
+      if (!assetTypesInPortfolio.has('Ação EUA') && !assetTypesInPortfolio.has('ETF Internacional') && portfolioValue > 5000) { 
          recommendations.push({
             title: "Diversificação Internacional",
             description: "Considere alocar uma parte dos seus investimentos no exterior para dolarizar parte do patrimônio e acessar outros mercados. ETFs (como IVVB11 ou WRLD11) ou BDRs são um bom começo.",
@@ -196,8 +196,8 @@ const InvestmentRecommendations = ({ monthlyBalance, portfolioData = [] }) => {
     });
 
     if (hasPortfolio) {
-      let hasInternational = assetTypesInPortfolio.has('Ação EUA') || assetTypesInPortfolio.has('ETF Internacional') || Array.from(assetSymbolsInPortfolio).some(s => s.includes('IVVB11') || s.includes('WRLD11')); // Heurística
-      let hasCrypto = Array.from(assetSymbolsInPortfolio).some(s => s.includes('BTC') || s.includes('ETH')); // Heurística
+      let hasInternational = assetTypesInPortfolio.has('Ação EUA') || assetTypesInPortfolio.has('ETF Internacional') || Array.from(assetSymbolsInPortfolio).some(s => s.includes('IVVB11') || s.includes('WRLD11')); 
+      let hasCrypto = Array.from(assetSymbolsInPortfolio).some(s => s.includes('BTC') || s.includes('ETH')); 
 
       if (!hasInternational && portfolioValue > 20000) { 
         recommendations.push({
