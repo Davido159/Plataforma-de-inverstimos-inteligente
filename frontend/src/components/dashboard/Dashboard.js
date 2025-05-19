@@ -97,7 +97,6 @@ const Dashboard = ({ token, currentUser }) => {
         fetchPortfolioData();
         fetchOpeningBalanceForDashboard(selectedMonth, selectedYear);
     } else { 
-        // console.warn("Dashboard - useEffect principal: LIMPANDO ESTADOS (token ou currentUser ausente/mudou)."); // REMOVIDO
         setLoadingTransactions(false);
         setLoadingPortfolio(false);
         setLoadingOpeningBalance(false);
@@ -200,7 +199,7 @@ const Dashboard = ({ token, currentUser }) => {
             }
             const ctx = portfolioChartRef.current.getContext('2d');
             try { 
-                portfolioChartInstanceRef.current = new Chart(ctx, { /* ...options... */
+                portfolioChartInstanceRef.current = new Chart(ctx, { 
                     type: 'doughnut', 
                     data: portfolioChartData,
                     options: { 
@@ -233,9 +232,7 @@ const Dashboard = ({ token, currentUser }) => {
   }, [portfolioChartData]); 
 
   useEffect(() => {
-    // console.log("Dashboard - useEffect (expensesChart) disparado."); // REMOVIDO
     const timerId = setTimeout(() => {
-        // console.log("Dashboard - useEffect (expensesChart) - DENTRO DO TIMEOUT. expensesChartRef.current:", expensesChartRef.current ? "Existe" : "Nulo"); // REMOVIDO
 
         if (!expensesChartRef.current) {
             if (expensesChartInstanceRef.current) {
@@ -252,7 +249,7 @@ const Dashboard = ({ token, currentUser }) => {
             }
             const ctx = expensesChartRef.current.getContext('2d');
             try {
-                expensesChartInstanceRef.current = new Chart(ctx, { /* ...options... */
+                expensesChartInstanceRef.current = new Chart(ctx, { 
                 type: 'pie', data: expensesByCategoryChartData, 
                 options: { 
                     responsive: true, 
