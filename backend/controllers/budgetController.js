@@ -23,7 +23,7 @@ exports.setBudget = async (req, res, next) => {
         const category = await Category.findOne({
             where: {
                 id: parseInt(categoryId, 10),
-                type: 'expense', // Orçamentos são geralmente para despesas
+                type: 'expense', 
                 [Op.or]: [{ userId: userId }, { isDefault: true, userId: null }]
             }
         });
