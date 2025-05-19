@@ -125,7 +125,7 @@ const FinancialManagementPage = ({ token }) => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(prev => prev.filter(t => t.id !== transactionId));
-      fetchOpeningBalance(selectedMonth, selectedYear); // Recalcula saldo após deleção
+      fetchOpeningBalance(selectedMonth, selectedYear); 
       setToast({ message: 'Transação excluída!', type: 'success' });
     } catch (err) {
       console.error('Erro ao excluir transação:', err.response || err);
