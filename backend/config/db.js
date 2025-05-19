@@ -1,56 +1,63 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config(); 
 
+const dbConfigOptions = {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT || 3306, 
+  dialect: 'mysql',
+  logging: process.env.NODE_ENV === 'development' ? console.log : false, 
+  pool: {
+    max: 5, 
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
+};
 
-const dbHost = process.env.DB_HOST || 'localhost'; 
-const dbPort = process.env.DB_PORT || 3306;    
+
+if (process.env.NODE_ENV === 'production' && process.env.DB_SSL_REQUIRED === 'true') {
+  dbConfigOptions.dialectOptions = {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false 
+    }
+  };
+  console.log('[DB Config] SSL para MySQL ATIVADO em produção.');
+} else if (process.env.NODE_ENV === 'production') {
+  console.log('[DB Config] SSL para MySQL NÃO ATIVADO explicitamente em produção (DB_SSL_REQUIRED não é "true").');
+}
+
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASSWORD,
-  {
-    host: dbHost,
-    port: dbPort,
-    dialect: 'mysql',
-    logging: process.env.NODE_ENV === 'development' ? console.log : false,
-    dialectOptions: {
-    },
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
-  }
+  dbConfigOptions
 );
 
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log(`Conexão com MySQL em ${dbHost}:${dbPort} estabelecida com sucesso.`);
+    console.log('Conexão com MySQL estabelecida com sucesso.');
   } catch (error) {
-    console.error(`Não foi possível conectar ao banco de dados MySQL em ${dbHost}:${dbPort}:`, error.message);
-    if (error.original) {
-        console.error('Detalhes do erro original:', error.original);
-    }
+    console.error('Não foi possível conectar ao banco de dados MySQL:', error);
     process.exit(1); 
   }
 };
 
 const syncDB = async (options = {}) => { 
   try {
-    await sequelize.sync(options);
-    if (options.alter) {
-        console.log("Modelos sincronizados com o banco de dados (com alterações aplicadas).");
-    } else if (options.force) {
-        console.log("Banco de dados recriado (com tabelas dropadas e recriadas).");
+
+    if (process.env.NODE_ENV === 'production') {
+      await sequelize.sync(); 
+      console.log("Modelos sincronizados com o banco de dados (Modo Produção - sem alter/force).");
     } else {
-        console.log("Modelos sincronizados com o banco de dados (tabelas criadas se não existiam).");
+      await sequelize.sync(options); 
+      console.log("Modelos sincronizados com o banco de dados (Modo Desenvolvimento). Opções:", options);
     }
   } catch (error) {
     console.error("Erro ao sincronizar modelos:", error);
-    throw error; 
+    process.exit(1);
   }
 };
 
