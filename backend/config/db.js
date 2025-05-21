@@ -1,62 +1,43 @@
 const { Sequelize } = require('sequelize');
+const fs = require('fs'); 
 require('dotenv').config(); 
-
-const dbConfigOptions = {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT || 3306, 
-  dialect: 'mysql',
-  logging: process.env.NODE_ENV === 'development' ? console.log : false, 
-  pool: {
-    max: 5, 
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-};
-
-
-if (process.env.NODE_ENV === 'production' && process.env.DB_SSL_REQUIRED === 'true') {
-  dbConfigOptions.dialectOptions = {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false 
-    }
-  };
-  console.log('[DB Config] SSL para MySQL ATIVADO em produção.');
-} else if (process.env.NODE_ENV === 'production') {
-  console.log('[DB Config] SSL para MySQL NÃO ATIVADO explicitamente em produção (DB_SSL_REQUIRED não é "true").');
-}
-
-
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASSWORD,
-  dbConfigOptions
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
+    logging: process.env.NODE_ENV === 'development' ? console.log : false,
+    dialectOptions: {
+
+    },
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
+  }
 );
 
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Conexão com MySQL estabelecida com sucesso.');
+    console.log('Conexão com MySQL (AWS RDS) estabelecida com sucesso.'); 
   } catch (error) {
-    console.error('Não foi possível conectar ao banco de dados MySQL:', error);
-    process.exit(1); 
+    console.error('Não foi possível conectar ao banco de dados MySQL (AWS RDS):', error); 
+    process.exit(1);
   }
 };
 
-const syncDB = async (options = {}) => { 
+const syncDB = async (options = { alter: true }) => {
   try {
-
-    if (process.env.NODE_ENV === 'production') {
-      await sequelize.sync(); 
-      console.log("Modelos sincronizados com o banco de dados (Modo Produção - sem alter/force).");
-    } else {
-      await sequelize.sync(options); 
-      console.log("Modelos sincronizados com o banco de dados (Modo Desenvolvimento). Opções:", options);
-    }
+    await sequelize.sync(options);
+    console.log("Modelos sincronizados com o banco de dados (AWS RDS)."); 
   } catch (error) {
-    console.error("Erro ao sincronizar modelos:", error);
+    console.error("Erro ao sincronizar modelos com AWS RDS:", error); 
     process.exit(1);
   }
 };
