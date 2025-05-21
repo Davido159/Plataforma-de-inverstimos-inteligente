@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Toast from '../common/Toast'; 
+import Toast from '../common/Toast';
 
-const TransactionForm = ({ 
-  token, 
-  onTransactionSuccess, 
-  editingTransaction, 
-  setEditingTransaction, 
+const TransactionForm = ({
+  token,
+  onTransactionSuccess,
+  editingTransaction,
+  setEditingTransaction,
   availableCategories,
   isLoadingCategories
 }) => {
@@ -16,7 +16,6 @@ const TransactionForm = ({
   const [type, setType] = useState('expense');
   const [categoryId, setCategoryId] = useState('');
   const [loading, setLoading] = useState(false);
-
   const [toast, setToast] = useState({ message: '', type: '' });
 
   const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -37,21 +36,23 @@ const TransactionForm = ({
 
   useEffect(() => {
     if (editingTransaction || isLoadingCategories || !availableCategories) return;
+
     const categoriesForCurrentType = availableCategories.filter(cat => cat.type === type);
+
     if (categoriesForCurrentType.length > 0) {
       const isCurrentCategoryValid = categoriesForCurrentType.some(cat => String(cat.id) === categoryId);
-      if (!isCurrentCategoryValid || !categoryId) {
+
+      if (!isCurrentCategoryValid || !categoryId) { 
         setCategoryId(String(categoriesForCurrentType[0].id));
       }
-    } else {
+    } else { 
       setCategoryId('');
     }
-  }, [type, availableCategories, editingTransaction, isLoadingCategories]);
-
+  }, [type, availableCategories, editingTransaction, isLoadingCategories, categoryId]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setToast({ message: '', type: '' }); 
+    setToast({ message: '', type: '' });
 
     if (!description.trim() || !amount || !date || !type || !categoryId) {
       setToast({ message: 'Todos os campos são obrigatórios.', type: 'error' });
@@ -62,7 +63,7 @@ const TransactionForm = ({
       setToast({ message: 'O valor da transação deve ser positivo.', type: 'error' });
       return;
     }
-    
+
     setLoading(true);
 
     const transactionData = {
@@ -95,20 +96,18 @@ const TransactionForm = ({
       setLoading(false);
     }
   };
-  
+
   const filteredCategories = availableCategories ? availableCategories.filter(cat => cat.type === type) : [];
 
   return (
-    <> {}
+    <>
       <Toast message={toast.message} type={toast.type} onClose={() => setToast({ message: '', type: '' })} />
       <div className="card shadow-sm mb-4">
         <div className="card-header">
           <h3 className="h5 mb-0">{editingTransaction ? 'Editar Transação' : 'Adicionar Nova Transação'}</h3>
         </div>
         <div className="card-body">
-          {}
           <form onSubmit={handleSubmit} noValidate>
-            {}
             <div className="mb-3">
               <label htmlFor="description" className="form-label">Descrição<span className="text-danger">*</span></label>
               <input type="text" className="form-control" id="description" value={description} onChange={e => setDescription(e.target.value)} required />
@@ -133,7 +132,7 @@ const TransactionForm = ({
               </div>
               <div className="col-md-6">
                 <label htmlFor="category" className="form-label">Categoria<span className="text-danger">*</span></label>
-                <select id="category" className="form-select" value={categoryId} onChange={e => setCategoryId(e.target.value)} 
+                <select id="category" className="form-select" value={categoryId} onChange={e => setCategoryId(e.target.value)}
                   disabled={isLoadingCategories || (!editingTransaction && filteredCategories.length === 0 && availableCategories && availableCategories.length > 0) || (!availableCategories && !isLoadingCategories)}
                   required >
                   <option value="">
@@ -145,7 +144,6 @@ const TransactionForm = ({
                       return originalCategory ? (<option key={originalCategory.id} value={originalCategory.id.toString()}>{originalCategory.name} (tipo {originalCategory.type})</option>) : null;
                     })()}
                 </select>
-                {}
               </div>
             </div>
             <div className="d-flex">
